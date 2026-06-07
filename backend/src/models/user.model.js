@@ -3,11 +3,9 @@ const mongoose = require("mongoose")
 const userSchema = new mongoose.Schema({
     firstName:{
         type:String,
-        require:true
     },
     lastName:{
         type:String,
-        require:true
     },
     userName:{
         type:String,
@@ -22,8 +20,16 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         require:true,
+    },
+    profilePic:{
+        type:String
+    },
+    role:{
+        type:String,
+        enum:["guest","host"],
+        default:"guest"
     }
-})
+},{timestamps:true})
 
 const User = new mongoose.model("User",userSchema)
 
