@@ -96,6 +96,14 @@ const getListingById = async (req, res) => {
 const updateListingById = async (req, res) => {
   try {
     const {id} = req.params
+    if (!id) {
+      return res.status("Id is missing");
+    }
+    const host = req.userId;
+    const listing = await listing.findOne({_id:id})
+    if(host !== listing.host){
+      throw new Error("Invalid User")
+    }
     const {
       title,
       description,
@@ -109,14 +117,12 @@ const updateListingById = async (req, res) => {
       bathrooms,
     } = req.body;
     const files = req.files; // images store in multer
-    const host = req.userId;
     const imageUrls = [];
     for (const file of files) {
       const url = await uploadOnCloudinary(file.path);
       imageUrls.push(url);
     }
-    const _id = id
-    const listing = await Listing.findByIdAndUpdate(_id,{
+    const listing = await Listing.findByIdAndUpdate({_id:id},{
       title,
       description,
       pricePerNight,
@@ -149,9 +155,13 @@ const deleteListingById = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) {
-      res.status("Id is missing");
+      return res.status("Id is missing");
     }
-
+    const host = req.userId;
+    const listing = await listing.findOne({_id:id})
+    if(host !== listing.host){
+      throw new Error("Invalid User")
+    }
     const listing = await Listing.findByIdAndDelete({ _id: id });
     res.status("Listing deleted successfully");
   } catch (error) {

@@ -6,12 +6,13 @@
 const upload = require("../middleware/multer.js")
 const express = require("express")
 const {createListing,getAllListing,getListingById,updateListingById,deleteListingById} = require("../controllers/listing.controllers.js")
+const isAuth = require("../middleware/isAuth.js")
 const listingRouter = express.Router()
 
-listingRouter.post("/create",upload.array("images", 4),createListing)
-listingRouter.get("/all",getAllListing)
-listingRouter.get("/:id",getListingById)
-listingRouter.patch("/:id",updateListingById)
-listingRouter.delete("/:id",deleteListingById)
+listingRouter.post("/create",isAuth,upload.array("images", 4),createListing)
+listingRouter.get("/all",isAuth,getAllListing)
+listingRouter.get("/:id",isAuth,getListingById)
+listingRouter.patch("/:id",isAuth,updateListingById)
+listingRouter.delete("/:id",isAuth,deleteListingById)
 
 module.exports = listingRouter
