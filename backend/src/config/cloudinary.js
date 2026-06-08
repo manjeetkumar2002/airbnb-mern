@@ -1,0 +1,24 @@
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs")
+const uploadOnCloudinary = async (filePath) => {
+   cloudinary.config({ 
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+        api_key: process.env.CLOUDINARY_API_KEY, 
+        api_secret: process.env.CLOUDINART_API_SECRET
+    });
+  try{
+    if(!filePath){
+        return null
+    }
+    const result = await cloudinary.uploader.upload(filePath);
+    //delete the file from backend
+    fs.unlinkSync(filePath)
+    return result.secure_url
+}
+catch(error){
+    fs.unlinkSync(filePath)
+    console.log(error)
+  }
+};
+
+module.exports = uploadOnCloudinary;

@@ -7,9 +7,11 @@ const userRouter = require("./src/routes/user.routes")
 const main = require("./src/config/db.js")
 const redisClient = require("./src/config/redis.js")
 const cookieParser = require("cookie-parser")
+const listingRouter = require("./src/routes/listing.routes.js")
 app.use(express.json())
 app.use(cookieParser())
 app.use("/user",userRouter)
+app.use("/listing",listingRouter)
 
 const initializeConnection = async()=>{
     try{

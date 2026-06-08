@@ -10,7 +10,10 @@ const listingSchema = new mongoose.Schema({
 
     images:[String],
     amenities:[String],
-    guests:Number,
+    guests:{
+        type:Number,
+        default:0
+    },
     bedrooms:Number,
     bathrooms:Number,
     host:{
@@ -23,3 +26,4 @@ const listingSchema = new mongoose.Schema({
 
 
 const Listing = new mongoose.model("Listing",listingSchema)
+module.exports = Listing
