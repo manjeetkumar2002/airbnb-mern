@@ -10,9 +10,9 @@ const isAuth = require("../middleware/isAuth.js")
 const listingRouter = express.Router()
 
 listingRouter.post("/create",isAuth,upload.array("images", 4),createListing)
-listingRouter.get("/all",isAuth,getAllListing)
-listingRouter.get("/:id",isAuth,getListingById)
-listingRouter.patch("/:id",isAuth,updateListingById)
-listingRouter.delete("/:id",isAuth,deleteListingById)
+listingRouter.get("/get/all",isAuth,getAllListing)
+listingRouter.get("/get/:id",isAuth,getListingById)
+listingRouter.patch("/update/:id",isAuth,upload.array("images", 4),updateListingById)
+listingRouter.delete("/delete/:id",isAuth,deleteListingById)
 
 module.exports = listingRouter

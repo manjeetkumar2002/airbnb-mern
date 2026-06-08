@@ -100,8 +100,14 @@ const updateListingById = async (req, res) => {
       return res.status("Id is missing");
     }
     const host = req.userId;
-    const listing = await listing.findOne({_id:id})
-    if(host !== listing.host){
+    let listing = await Listing.findOne({_id:id})
+
+    if (!listing) {
+      return res.status(404).json({
+        message: "Listing not found"
+      });
+    }
+    if(host !== listing.host.toString()){
       throw new Error("Invalid User")
     }
     const {
@@ -122,7 +128,7 @@ const updateListingById = async (req, res) => {
       const url = await uploadOnCloudinary(file.path);
       imageUrls.push(url);
     }
-    const listing = await Listing.findByIdAndUpdate({_id:id},{
+    listing = await Listing.findByIdAndUpdate({_id:id},{
       title,
       description,
       pricePerNight,
@@ -158,12 +164,19 @@ const deleteListingById = async (req, res) => {
       return res.status("Id is missing");
     }
     const host = req.userId;
-    const listing = await listing.findOne({_id:id})
-    if(host !== listing.host){
+    let listing = await Listing.findOne({_id:id})
+
+    if (!listing) {
+      return res.status(404).json({
+        message: "Listing not found"
+      });
+    }
+
+    if(host !== listing.host.toString()){
       throw new Error("Invalid User")
     }
-    const listing = await Listing.findByIdAndDelete({ _id: id });
-    res.status("Listing deleted successfully");
+    listing = await Listing.findByIdAndDelete({ _id: id });
+    res.status(200).send("Listing deleted successfully");
   } catch (error) {
     console.log(error);
     res.status(500).json({
