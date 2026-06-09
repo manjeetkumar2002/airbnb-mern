@@ -112,4 +112,42 @@ const cancelBooking = async(req,res)=>{
     }
 }
 
-module.exports = {createBooking,confirmBooking,cancelBooking}
+const guestAllBooking = async(req,res)=>{
+    try {
+        const userId = req.userId
+        const bookings = await Booking.find({guest:userId})
+        res.status(200).json(bookings)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+        message:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Internal Server Error",
+        });
+    }
+}
+
+const hostAllBooking = async(req,res)=>{
+    try {
+        const userId = req.userId
+        // finding all listing of host
+        const listing = await Listing.find({host:userId})
+        const listingIds = listing.map((listing)=>listing._id)
+
+        const bookings = await Booking({
+            listing:{$in : listingIds}
+        })
+        res.status(200).json(bookings)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+        message:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Internal Server Error",
+        });
+    }
+}
+
+module.exports = {createBooking,confirmBooking,cancelBooking,guestAllBooking,hostAllBooking}

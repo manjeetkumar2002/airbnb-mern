@@ -19,7 +19,12 @@ const createListing = async (req, res) => {
       bedrooms,
       bathrooms,
     } = req.body;
-    const files = req.files; // images store in multer
+    const files = req.files || []; // images store in multer
+    if (!files.length) {
+    return res.status(400).json({
+      message: "At least one image is required"
+    });
+}
     const host = req.userId;
     const imageUrls = [];
     for (const file of files) {
