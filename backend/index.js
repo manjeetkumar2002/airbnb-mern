@@ -9,11 +9,13 @@ const redisClient = require("./src/config/redis.js")
 const cookieParser = require("cookie-parser")
 const listingRouter = require("./src/routes/listing.routes.js")
 const bookingRouter = require("./src/routes/booking.routes.js")
+const reviewRouter = require("./src/routes/review.routes.js")
 app.use(express.json())
 app.use(cookieParser())
 app.use("/user",userRouter)
 app.use("/listing",listingRouter)
 app.use("/booking",bookingRouter)
+app.use("/review",reviewRouter)
 const initializeConnection = async()=>{
     try{
         await Promise.all([redisClient.connect(),main()])

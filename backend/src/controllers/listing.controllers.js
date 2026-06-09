@@ -5,6 +5,7 @@
 // DELETE /listing/:id
 const Listing = require("../models/listing.model.js");
 const uploadOnCloudinary = require("../config/cloudinary.js");
+const mongoose = require("mongoose");
 const createListing = async (req, res) => {
   try {
     const {
@@ -21,14 +22,19 @@ const createListing = async (req, res) => {
     } = req.body;
     const files = req.files || []; // images store in multer
     if (!files.length) {
-    return res.status(400).json({
-      message: "At least one image is required"
-    });
-}
+      return res.status(400).json({
+        message: "At least one image is required",
+      });
+    }
     const host = req.userId;
     const imageUrls = [];
     for (const file of files) {
       const url = await uploadOnCloudinary(file.path);
+      if (!url) {
+        return res.status(500).json({
+          message: "Image upload failed",
+        });
+      }
       imageUrls.push(url);
     }
     const listing = await Listing.create({
@@ -66,7 +72,7 @@ const getAllListing = async (req, res) => {
     res.status(200).json(listing);
   } catch (error) {
     console.log(error);
-    req.status(500).json({
+    res.status(500).json({
       message:
         process.env.NODE_ENV === "development"
           ? error.message
@@ -79,11 +85,20 @@ const getListingById = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) {
-      throw new Error("Id is missing");
+      return res.status(400).json({
+        message: "Id is missing",
+      });
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "Invalid Listing Id",
+      });
     }
     const listing = await Listing.findById({ _id: id });
     if (!listing) {
-      throw new Error("listing not found");
+      return res.status(404).json({
+        message: "Listing not found",
+      });
     }
 
     res.status(200).json(listing);
@@ -100,20 +115,29 @@ const getListingById = async (req, res) => {
 
 const updateListingById = async (req, res) => {
   try {
-    const {id} = req.params
+    const { id } = req.params;
     if (!id) {
-      return res.status("Id is missing");
+      return res.status(400).json({
+        message: "Id is missing",
+      });
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "Invalid Listing Id",
+      });
     }
     const host = req.userId;
-    let listing = await Listing.findOne({_id:id})
+    let listing = await Listing.findOne({ _id: id });
 
     if (!listing) {
       return res.status(404).json({
-        message: "Listing not found"
+        message: "Listing not found",
       });
     }
-    if(host !== listing.host.toString()){
-      throw new Error("Invalid User")
+    if (host !== listing.host.toString()) {
+      return res.status(403).json({
+        message: "You are not authorized",
+      });
     }
     const {
       title,
@@ -127,27 +151,39 @@ const updateListingById = async (req, res) => {
       bedrooms,
       bathrooms,
     } = req.body;
-    const files = req.files; // images store in multer
+    const files = req.files || []; // images store in multer
     const imageUrls = [];
     for (const file of files) {
       const url = await uploadOnCloudinary(file.path);
+      if (!url) {
+        return res.status(500).json({
+          message: "Image upload failed",
+        });
+      }
       imageUrls.push(url);
     }
-    listing = await Listing.findByIdAndUpdate({_id:id},{
+    const updateData = {
       title,
       description,
       pricePerNight,
       location,
       country,
-      images: imageUrls,
       amenities,
       city,
       guests,
       bedrooms,
       bathrooms,
-      host,
-    },{new:true});
-    res.status(201).json({
+    };
+
+    if (imageUrls.length > 0) {
+      updateData.images = imageUrls;
+    }
+
+    listing = await Listing.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json({
       message: "Listing updated Successfully",
       listing,
     });
@@ -166,22 +202,33 @@ const deleteListingById = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) {
-      return res.status("Id is missing");
+      return res.status(400).json({
+        message: "Id is missing",
+      });
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "Invalid Listing Id",
+      });
     }
     const host = req.userId;
-    let listing = await Listing.findOne({_id:id})
+    let listing = await Listing.findOne({ _id: id });
 
     if (!listing) {
       return res.status(404).json({
-        message: "Listing not found"
+        message: "Listing not found",
       });
     }
 
-    if(host !== listing.host.toString()){
-      throw new Error("Invalid User")
+    if (host !== listing.host.toString()) {
+      return res.status(403).json({
+        message: "You are not authorized",
+      });
     }
     listing = await Listing.findByIdAndDelete({ _id: id });
-    res.status(200).send("Listing deleted successfully");
+    res.status(200).json({
+      message: "Listing deleted successfully",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
