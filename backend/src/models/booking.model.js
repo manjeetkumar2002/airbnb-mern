@@ -4,31 +4,37 @@ const bookingSchema = new mongoose.Schema({
     guest:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
-        require:true
+        required:true
     },
+
     listing:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Listing",
-        require:true
+        required:true
     },
+
     checkIn:{
         type:Date,
-        require:true
+        required:true
     },
+
     checkOut:{
         type:Date,
-        require:true
+        required:true
     },
+
     totalPrice:{
         type:Number,
-        require:true
+        required:true
     },
 
     status:{
         type:String,
-        enum:["pending","confirmed","cancelled"],
-        default:"pending"
+        enum:["confirmed","cancelled"],
+        default:"confirmed"
     }
+},{
+    timestamps:true
 })
 
 const Booking = new mongoose.model("Booking",bookingSchema)
