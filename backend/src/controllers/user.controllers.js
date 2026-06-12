@@ -9,7 +9,7 @@ const register = async (req, res) => {
   try {
     validate(req.body);
     // step1 :validate the data
-    const { firstName, lastName, userName, emailId, password } = req.body;
+    const {userName, emailId, password } = req.body;
     const existingUser = await User.findOne({
       $or: [{ emailId }, { userName }],
     });
@@ -23,8 +23,6 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     // step3 :store the user into db
     const user = await User.create({
-      firstName,
-      lastName,
       userName,
       emailId,
       password: hashedPassword,
