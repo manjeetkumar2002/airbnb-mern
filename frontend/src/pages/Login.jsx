@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import {z} from "zod"
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,12 +6,14 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import axiosClient from '../utils/axiosClient';
 import ErrorModal from "../component/ErrorModal.jsx"
 import { FaArrowLeft } from "react-icons/fa";
+import { MessageContext } from '../context/MessageContext.jsx';
 
 const loginSchema = z.object({
   emailId: z.string().email("Invalid Email"),
   password: z.string()
 });
 const Login = () => {
+  const {showMessage} = useContext(MessageContext)
   const navigate = useNavigate()
   const [loading,setLoading] = useState(false)
   const [showPassword,setShowPassword] = useState(false)
@@ -22,6 +24,7 @@ const Login = () => {
     try {
       const result = await axiosClient.post("/user/login",data);
       console.log(result.data)
+      showMessage(result.data.message)
       navigate("/")
     } catch (error) {
       console.log(error?.response?.data?.message)

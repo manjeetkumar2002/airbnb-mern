@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import {z} from "zod"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axiosClient from '../utils/axiosClient';
 import ErrorModal from "../component/ErrorModal.jsx"
+import { MessageContext } from '../context/MessageContext.jsx';
 const signupSchema = z.object({
   userName: z.string().min(3, "Minimum character should be 3"),
   emailId: z.string().email("Invalid Email"),
@@ -16,11 +17,13 @@ const SignUp = () => {
   const [showPassword,setShowPassword] = useState(false)
   const {register,handleSubmit,formState: { errors }} = useForm({resolver:zodResolver(signupSchema)});
   const [error,setError] = useState("")
+  const {showMessage} = useContext(MessageContext)
   const onSubmit = async(data)=>{
     setLoading(true)
     try {
       const result = await axiosClient.post("/user/register",data);
       console.log(result.data)
+      showMessage(result.data.message)
       navigate("/")
     } catch (error) {
       console.log(error?.response?.data?.message)
