@@ -5,10 +5,21 @@ import { MdMenu } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
 import { MessageContext } from "../context/MessageContext";
+import axiosClient from "../utils/axiosClient";
+import { userContext } from "../context/UserContext";
 const Nav = () => {
   const [showMenu, setShowMenu] = useState(false);
   const { message, showMessage, setMessage } = useContext(MessageContext);
   const [progress, setProgress] = useState(100);
+  const {setUserData} = useContext(userContext)
+  async function handleLogout(){
+    try {
+      const result = await axiosClient.post("/user/logout")
+      setUserData(null)
+    } catch (error) {
+      
+    }
+  }
   useEffect(() => {
     if (!message) return;
 
@@ -68,6 +79,9 @@ const Nav = () => {
           </div>
           <div className="pb-2 px-5  w-full ">
             <NavLink>My Booking</NavLink>
+          </div>
+          <div onClick={handleLogout} className="pb-2 px-5  w-full ">
+            <NavLink>Logout</NavLink>
           </div>
         </div>
       </div>

@@ -148,4 +148,41 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = { register, login, logout };
+const checkAuth = async(req,res)=>{
+  try {
+    const {token} = req.cookies
+    if(!token){
+      return res.status(400).json({
+        message:"Invalid Token"
+      })
+    }
+    const payload = jwt.verify(token,JWT_SECRET_KEY)
+    if(!payload){
+      return res.status(400).json({
+        message:"Invalid Token"
+      })
+    }
+    const {userId} = payload
+    if(!userId){
+      return res.status(400).json({
+        message:"Invalid Token"
+      })
+    }
+    const user = await User.findById(userId).select("-password")
+    if(!user){
+      return res.status(400).json({
+        message:"User not found"
+      })
+    }
+    return res.status(200).json(user)
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Internal Server Error",
+    });
+  }
+}
+module.exports = { register, login, logout,checkAuth };

@@ -7,6 +7,7 @@ import axiosClient from '../utils/axiosClient';
 import ErrorModal from "../component/ErrorModal.jsx"
 import { FaArrowLeft } from "react-icons/fa";
 import { MessageContext } from '../context/MessageContext.jsx';
+import { userContext } from '../context/UserContext.jsx';
 
 const loginSchema = z.object({
   emailId: z.string().email("Invalid Email"),
@@ -19,11 +20,13 @@ const Login = () => {
   const [showPassword,setShowPassword] = useState(false)
   const {register,handleSubmit,formState: { errors }} = useForm({resolver:zodResolver(loginSchema)});
   const [error,setError] = useState("")
+  const {setUserData} = useContext(userContext)
   const onSubmit = async(data)=>{
     setLoading(true)
     try {
       const result = await axiosClient.post("/user/login",data);
       console.log(result.data)
+      setUserData(result.data)
       showMessage(result.data.message)
       navigate("/")
     } catch (error) {
