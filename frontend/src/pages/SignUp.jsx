@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import {z} from "zod"
 import { zodResolver } from '@hookform/resolvers/zod';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import axiosClient from '../utils/axiosClient';
 import ErrorModal from "../component/ErrorModal.jsx"
 const signupSchema = z.object({
@@ -11,6 +11,7 @@ const signupSchema = z.object({
   password: z.string().min(8, "Password is too weak")
 });
 const SignUp = () => {
+  const navigate = useNavigate()
   const [loading,setLoading] = useState(false)
   const [showPassword,setShowPassword] = useState(false)
   const {register,handleSubmit,formState: { errors }} = useForm({resolver:zodResolver(signupSchema)});
@@ -20,6 +21,7 @@ const SignUp = () => {
     try {
       const result = await axiosClient.post("/user/register",data);
       console.log(result.data)
+      navigate("/")
     } catch (error) {
       console.log(error?.response?.data?.message)
       setError(error?.response?.data?.message ||"Something went wrong")
