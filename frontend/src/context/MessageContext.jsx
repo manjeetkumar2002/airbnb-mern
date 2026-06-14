@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 export const MessageContext = createContext()
 
-const MessageProvider = ({children})=>{
+const MessageContextProvider = ({children})=>{
     const [message,setMessage] = useState(null)
     const showMessage=(content,type="success")=>{
         setMessage(content)
@@ -15,4 +15,4 @@ const MessageProvider = ({children})=>{
     )
 }
 
-export default MessageProvider
+export default MessageContextProvider

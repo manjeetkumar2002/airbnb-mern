@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const Card = ({ title, description, images, pricePerNight }) => {
+const Card = ({ id,title, description, images, pricePerNight }) => {
+  const navigate = useNavigate()
   return (
-    <div className="card bg-base-100 w-85 shadow-sm">
+    <div onClick={()=>{console.log("clicked"); navigate(`/listing/${id}`)}} className="cursor-pointer card bg-base-100 w-85 shadow-sm">
       <div className="flex overflow-auto snap-x snap-mandatory">
         {images.map((img, index) => (
           <img

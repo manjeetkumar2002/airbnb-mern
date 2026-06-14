@@ -52,7 +52,7 @@ const ListingFilters = () => {
     <div className='flex justify-center items-center gap-6 py-4'>
         {
             Filters.map(({icon:Icon,name},index)=>(
-                <div key={index} className='flex flex-col items-center'>
+                <div key={index} className='cursor-pointer flex flex-col items-center'>
                     <Icon className='text-3xl'/>
                     <span className='text-[16px]'>{name}</span>
                 </div>
