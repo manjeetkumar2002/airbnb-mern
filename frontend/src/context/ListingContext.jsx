@@ -12,7 +12,7 @@ const ListingContextProvider = ({children})=>{
         try {
             const result =await axiosClient.get("/listing/get/all")
             console.log(result.data)
-            setAllListing(result.data)
+            setAllListing([...result.data])
         } catch (error) {
             console.log(error)
         }
@@ -22,7 +22,7 @@ const ListingContextProvider = ({children})=>{
         fetchAllListing()
     },[userData])
     return (
-        <listingContext.Provider value={allListing,setAllListing,filteredListing,setFilteredListing}>{children}</listingContext.Provider>
+        <listingContext.Provider value={{allListing,setAllListing,filteredListing,setFilteredListing}}>{children}</listingContext.Provider>
     )
 }
 
