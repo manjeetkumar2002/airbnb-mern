@@ -8,7 +8,6 @@ import { userContext } from "./context/UserContext"
 import { useEffect } from "react"
 function App() {
   const {userData} = useContext(userContext)
-  const navigate = useNavigate()
   const {checkAuth} = useContext(userContext)
     useEffect(()=>{
       checkAuth()
