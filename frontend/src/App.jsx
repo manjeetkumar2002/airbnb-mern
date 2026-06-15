@@ -7,6 +7,7 @@ import { useContext } from "react"
 import { userContext } from "./context/UserContext"
 import { useEffect } from "react"
 import ViewCard from "./component/ViewCard"
+import ListingPage1 from "./pages/ListingPage1"
 
 function App() {
   const {userData} = useContext(userContext)
@@ -20,6 +21,7 @@ function App() {
       <Route path="/signup" element={userData? <Navigate to="/"/>:<SignUp/>}></Route>
       <Route path="/login" element={userData?<Navigate to="/"/>:<Login/>}></Route>
       <Route path="/listing/:id" element={userData?<ViewCard/>:<Navigate to="/login"/>}></Route>
+      <Route path="/listingpage1" element={userData?<ListingPage1/>:<Navigate to="/login"/>}></Route>
     </Routes>
   )
 }

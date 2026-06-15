@@ -56,7 +56,7 @@ const Nav = () => {
       </div>
       {/* humburger */}
       <div className="relative flex items-center gap-[20px]">
-        <NavLink className="text-[18px]">List your home</NavLink>
+        <NavLink to="listingpage1" className="text-[18px]">List your home</NavLink>
         <div
           onClick={() => setShowMenu(!showMenu)}
           className="flex gap-[10px] items-center justify-center border-1 px-4  py-2 rounded-3xl cursor-pointer"
