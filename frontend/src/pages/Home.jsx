@@ -6,7 +6,7 @@ import ListingFilters from '../component/ListingFilters.jsx'
 import { useNavigate } from 'react-router-dom'
 const Home = () => {
   const {allListing} = useContext(listingContext)
-  console.log(allListing)
+  // console.log(allListing)
   const navigate = useNavigate()
   return (
     <div className='max-w-[1280px] mx-auto'>

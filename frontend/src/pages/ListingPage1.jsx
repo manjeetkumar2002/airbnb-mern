@@ -1,47 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import {z} from "zod"
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-// title: String,
-//     description: String,
-//     pricePerNight: Number,
-//     location: String,
-//     country: String,
-//     city: String,
+import { listingContext } from '../context/ListingContext';
 
-//     images:[String],
-//     amenities:[String],
-//     guests:{
-//         type:Number,
-//         default:0
-//     },
-//     bedrooms:Number,
-//     bathrooms:Number,
-//     host:{
-//         type:mongoose.Schema.Types.ObjectId,
-//         ref:"User"
-//     },
 const listingSchema = z.object({
-  title: z.string().min(3, "Title is required"),
-  description: z.string().min(10, "Description is required"),
-
-  pricePerNight: z.coerce.number(),
-
-  city: z.string(),
-  country: z.string(),
-  location: z.string(),
-
-  amenities: z.array(z.string()),
-
-  bedrooms: z.coerce.number(),
-  bathrooms: z.coerce.number(),
-
-  images: z
-    .array(z.instanceof(File))
-    .min(4, "Upload exactly 4 images")
-    .max(4, "Upload exactly 4 images"),
+  title: z.any().optional(),
+  description: z.any().optional(),
+  pricePerNight: z.any().optional(),
+  city: z.any().optional(),
+  country: z.any().optional(),
+  location: z.any().optional(),
+  amenities: z.any().optional(),
+  bedrooms: z.any().optional(),
+  bathrooms: z.any().optional(),
+  images: z.any().optional(),
 });
 
 const amenitiesList = [
@@ -54,9 +29,14 @@ const amenitiesList = [
 ];
 const ListingPage1 = () => {
     const navigate = useNavigate()
+    const {listingFormData,setListingFormData} = useContext(listingContext)
     const {register,handleSubmit,setValue,formState: { errors }} = useForm({resolver:zodResolver(listingSchema)});
-    async function onSubmit(){
-
+    async function onSubmit(data){
+        setListingFormData((prev)=>({
+            ...prev,
+            ...data
+        }))
+        navigate("/listingpage2")
     }
   return (
     <div className='h-screen'>
@@ -181,7 +161,7 @@ const ListingPage1 = () => {
             
             {/* submit btn */}
             <div>
-                <button  onClick={()=>navigate("/landingpage2")} className='btn btn-secondary max-w-[200px] w-full'>Next</button>
+                <button type='submit' className='btn btn-secondary max-w-[200px] w-full'>Next</button>
             </div>
         </form>
     </div>
