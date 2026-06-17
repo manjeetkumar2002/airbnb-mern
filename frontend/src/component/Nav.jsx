@@ -38,25 +38,25 @@ const Nav = () => {
     return () => clearInterval(interval);
   }, [message]);
   return (
-    <div className="h-[120px] flex items-center justify-between px-3 py-0 border-b-1">
+    <div className="min-h-[120px] flex flex-wrap items-center justify-between px-3 border-b">
       {/* logo */}
-      <div className="w-[130px] h-[120px]">
+      <div className="w-[130px] h-[120px] overflow-hidden object-center order-1">
         <img className="h-full w-full" src={logo} alt="" />
       </div>
       {/* search */}
-      <div className="relative border-1 p-3 rounded-3xl max-w-[500px] w-full">
-        <input
-          className="w-[70%] outline-0 border-0"
-          type="text"
-          placeholder="Any Where | Any Location | Any City"
-        />
-        <div className="flex justify-center items-center absolute top-1 right-1 rounded-full p-2 bg-secondary text-white text-2xl">
-          <CiSearch />
-        </div>
-      </div>
+      <div className="relative md:top-0 top-[-20px] border p-3 rounded-3xl w-full order-3 md:order-2 md:max-w-[500px]">
+  <input
+    className="w-[70%] outline-none border-0"
+    type="text"
+    placeholder="Any Where | Any Location | Any City"
+  />
+  <div className="flex justify-center items-center absolute top-1 right-1 rounded-full p-2 bg-secondary text-white text-2xl">
+    <CiSearch />
+  </div>
+</div>
       {/* humburger */}
-      <div className="relative flex items-center gap-[20px]">
-        <NavLink to="listingpage1" className="text-[18px]">List your home</NavLink>
+      <div className="relative flex items-center gap-[20px] order-2 md:order-3">
+        <NavLink to="listingpage1" className="lg:block hidden text-[18px]">List your home</NavLink>
         <div
           onClick={() => setShowMenu(!showMenu)}
           className="flex gap-[10px] items-center justify-center border-1 px-4  py-2 rounded-3xl cursor-pointer"
@@ -66,7 +66,7 @@ const Nav = () => {
         </div>
         {/* menu */}
         <div
-          className={`${showMenu ? "flex" : "hidden"} border-1 absolute top-[50px] right-5 bg-base-100 rounded-md p-5 px-0 z-10 flex-col gap-[10px]`}
+          className={`${showMenu ? "flex" : "hidden"} min-w-[200px] border-1 absolute top-[50px] right-5 bg-base-100 rounded-md p-5 px-0 z-10 flex-col gap-[10px]`}
         >
           <div className="pb-2  px-5 w-full border-b-1">
             <NavLink>Login</NavLink>
