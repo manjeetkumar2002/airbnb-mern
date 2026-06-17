@@ -19,6 +19,7 @@ const createListing = async (req, res) => {
       guests,
       bedrooms,
       bathrooms,
+      category
     } = req.body;
     console.log(req.files)
     const files = req.files || []; // images store in multer
@@ -51,6 +52,7 @@ const createListing = async (req, res) => {
       bedrooms,
       bathrooms,
       host,
+      category
     });
     res.status(201).json({
       message: "Listing Created Successfully",
@@ -241,10 +243,26 @@ const deleteListingById = async (req, res) => {
   }
 };
 
+const myListing = async(req,res)=>{
+  try {
+    const userId = req.userId
+    const listing = await Listing.find({host:userId})
+    res.status(200).json(listing)
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Internal Server Error",
+    });
+  }
+}
 module.exports = {
   createListing,
   getAllListing,
   getListingById,
   updateListingById,
   deleteListingById,
+  myListing
 };

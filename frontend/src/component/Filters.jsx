@@ -49,15 +49,12 @@ const Filters = [
 ]
 const ListingFilters = () => {
     const {filteredListing,setFilteredListing,allListing} = useContext(listingContext)
-    console.log(allListing)
     const applyFilter =(filter)=>{
         if(filter == "Trending"){
             setFilteredListing([...allListing])
             return  
         }
-        console.log("filter click")
         const filterData = allListing.filter((listing)=>listing?.category?.toLowerCase() === filter?.toLowerCase())
-        console.log(filterData)
         setFilteredListing([...filterData])
     }
   return (

@@ -6,9 +6,11 @@ import { FaArrowLeft } from "react-icons/fa";
 
 const ListingPage3 = () => {
   const { listingFormData, setListingFormData } = useContext(listingContext);
+  const [loading,setLoading] = useState(false)
   console.log(listingFormData);
   const navigate = useNavigate();
   async function uploadListing() {
+    setLoading(true)
     try {
       const formData = new FormData();
 
@@ -31,6 +33,7 @@ const ListingPage3 = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false)
   }
   return (
     <div className="max-w-[1280px] mx-auto h-screen ">
@@ -75,11 +78,11 @@ const ListingPage3 = () => {
         <p className="text-2xl mb-3">₹{listingFormData?.pricePerNight}/day</p>
       </div>
       <div>
-        <button
+        <button disabled={loading}
           onClick={uploadListing}
           className="btn btn-secondary max-w-[200px] mt-[20px] w-full"
         >
-          Add Listing
+          {loading?"Adding...":"Add Listing"}
         </button>
       </div>
     </div>

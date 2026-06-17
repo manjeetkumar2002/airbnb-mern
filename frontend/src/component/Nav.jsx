@@ -11,14 +11,12 @@ const Nav = () => {
   const [showMenu, setShowMenu] = useState(false);
   const { message, showMessage, setMessage } = useContext(MessageContext);
   const [progress, setProgress] = useState(100);
-  const {setUserData} = useContext(userContext)
-  async function handleLogout(){
+  const { setUserData } = useContext(userContext);
+  async function handleLogout() {
     try {
-      const result = await axiosClient.post("/user/logout")
-      setUserData(null)
-    } catch (error) {
-      
-    }
+      const result = await axiosClient.post("/user/logout");
+      setUserData(null);
+    } catch (error) {}
   }
   useEffect(() => {
     if (!message) return;
@@ -45,18 +43,20 @@ const Nav = () => {
       </div>
       {/* search */}
       <div className="relative md:top-0 top-[-20px] border p-3 rounded-3xl w-full order-3 md:order-2 md:max-w-[500px]">
-  <input
-    className="w-[70%] outline-none border-0"
-    type="text"
-    placeholder="Any Where | Any Location | Any City"
-  />
-  <div className="flex justify-center items-center absolute top-1 right-1 rounded-full p-2 bg-secondary text-white text-2xl">
-    <CiSearch />
-  </div>
-</div>
+        <input
+          className="w-[70%] outline-none border-0"
+          type="text"
+          placeholder="Any Where | Any Location | Any City"
+        />
+        <div className="flex justify-center items-center absolute top-1 right-1 rounded-full p-2 bg-secondary text-white text-2xl">
+          <CiSearch />
+        </div>
+      </div>
       {/* humburger */}
       <div className="relative flex items-center gap-[20px] order-2 md:order-3">
-        <NavLink to="listingpage1" className="lg:block hidden text-[18px]">List your home</NavLink>
+        <NavLink to="listingpage1" className="lg:block hidden text-[18px]">
+          List your home
+        </NavLink>
         <div
           onClick={() => setShowMenu(!showMenu)}
           className="flex gap-[10px] items-center justify-center border-1 px-4  py-2 rounded-3xl cursor-pointer"
@@ -75,7 +75,7 @@ const Nav = () => {
             <NavLink>List your Home</NavLink>
           </div>
           <div className="pb-2 px-5  w-full ">
-            <NavLink>My Listing</NavLink>
+            <NavLink to="/mylisting">My Listing</NavLink>
           </div>
           <div className="pb-2 px-5  w-full ">
             <NavLink>My Booking</NavLink>
@@ -87,7 +87,7 @@ const Nav = () => {
       </div>
       {/* message popup */}
       <div
-        className={`${message?"block":"hidden"} max-w-[300px] w-full z-100 bg-white text-success rounded-md fixed top-5 right-5 p-5`}
+        className={`${message ? "block" : "hidden"} max-w-[300px] w-full z-100 bg-white text-success rounded-md fixed top-5 right-5 p-5`}
       >
         Message : {message}
         <RxCross2
@@ -95,12 +95,11 @@ const Nav = () => {
           className="text-2xl text-black absolute right-1 top-1 "
         />
         {/* Progress Bar */}
-          <progress
-            className="progress h-2 right-0 left-0 absolute bottom-0 progress-success w-full rounded-0"
-            value={progress}
-            max="100"
-          ></progress>
-
+        <progress
+          className="progress h-2 right-0 left-0 absolute bottom-0 progress-success w-full rounded-0"
+          value={progress}
+          max="100"
+        ></progress>
       </div>
     </div>
   );
