@@ -20,6 +20,7 @@ const createListing = async (req, res) => {
       bedrooms,
       bathrooms,
     } = req.body;
+    console.log(req.files)
     const files = req.files || []; // images store in multer
     if (!files.length) {
       return res.status(400).json({

@@ -16,6 +16,7 @@ const listingSchema = new mongoose.Schema({
     },
     bedrooms:Number,
     bathrooms:Number,
+    category:String,
     host:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"

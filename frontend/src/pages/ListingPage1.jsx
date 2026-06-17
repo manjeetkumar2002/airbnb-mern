@@ -6,18 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { listingContext } from '../context/ListingContext';
 
-const listingSchema = z.object({
-  title: z.any().optional(),
-  description: z.any().optional(),
-  pricePerNight: z.any().optional(),
-  city: z.any().optional(),
-  country: z.any().optional(),
-  location: z.any().optional(),
-  amenities: z.any().optional(),
-  bedrooms: z.any().optional(),
-  bathrooms: z.any().optional(),
-  images: z.any().optional(),
-});
+import {listingpage1schema} from "../schemas/listingpage1.js"
 
 const amenitiesList = [
   "Wifi",
@@ -30,12 +19,13 @@ const amenitiesList = [
 const ListingPage1 = () => {
     const navigate = useNavigate()
     const {listingFormData,setListingFormData} = useContext(listingContext)
-    const {register,handleSubmit,setValue,formState: { errors }} = useForm({resolver:zodResolver(listingSchema)});
+    const {register,handleSubmit,setValue,formState: { errors }} = useForm({resolver:zodResolver(listingpage1schema)});
     async function onSubmit(data){
         setListingFormData((prev)=>({
             ...prev,
             ...data
         }))
+        console.log("click page1")
         navigate("/listingpage2")
     }
   return (

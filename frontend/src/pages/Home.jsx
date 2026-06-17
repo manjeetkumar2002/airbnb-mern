@@ -13,7 +13,7 @@ const Home = () => {
       <Nav/>
       <ListingFilters/>
       {/* listing cards */}
-      <div className='mt-[30px]'>
+      <div className='mt-[30px] flex flex-wrap gap-[20px]'>
         {
           allListing?.map((listing,index)=>
             <Card key={index}  id={listing._id} title={listing.title} images={listing.images} description={listing.description} pricePerNight={listing.pricePerNight}/>

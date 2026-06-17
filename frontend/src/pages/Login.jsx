@@ -26,7 +26,7 @@ const Login = () => {
     try {
       const result = await axiosClient.post("/user/login",data);
       console.log(result.data)
-      setUserData(result.data)
+      setUserData(result.data.user)
       showMessage(result.data.message)
       navigate("/")
     } catch (error) {

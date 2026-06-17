@@ -1,12 +1,14 @@
-import React, { useEffect ,useState } from 'react'
+import React, { useContext, useEffect ,useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosClient from '../utils/axiosClient'
 import { FaArrowLeft } from "react-icons/fa";
+import { userContext } from '../context/UserContext';
 
 const ViewCard = () => {
   const {id} = useParams()
   const [listing,setListing] = useState(null)
   const navigate = useNavigate()
+  const {userData} = useContext(userContext)
   async function fetchListing() {
     try {
         const result = await axiosClient.get(`/listing/get/${id}`)
@@ -18,7 +20,7 @@ const ViewCard = () => {
   }
   useEffect(()=>{
     fetchListing()
-  },[])
+  },[userData])
   return (
     <div className='max-w-[1280px] mx-auto h-screen '>
         <div onClick={()=>navigate("/")} className='fixed top-3 left-3 p-4 rounded-full bg-secondary cursor-pointer'>
@@ -41,7 +43,7 @@ const ViewCard = () => {
             <p className='text-2xl mb-3'>₹{listing?.pricePerNight}/day</p>
         </div>
         <div>
-            <button className='btn btn-secondary max-w-[200px] mt-[20px] w-full'>Add Listing</button>
+            <button className='btn btn-secondary max-w-[200px] mt-[20px] w-full'>{userData?._id === listing?.host ?"Edit Listing":"Reserve"}</button>
         </div>
     </div>
   )
