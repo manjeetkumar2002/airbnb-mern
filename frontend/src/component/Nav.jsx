@@ -78,7 +78,7 @@ const Nav = () => {
             <NavLink to="/mylisting">My Listing</NavLink>
           </div>
           <div className="pb-2 px-5  w-full ">
-            <NavLink>My Booking</NavLink>
+            <NavLink to="/mybooking">My Booking</NavLink>
           </div>
           <div onClick={handleLogout} className="pb-2 px-5  w-full ">
             <NavLink>Logout</NavLink>
