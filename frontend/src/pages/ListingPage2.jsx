@@ -12,8 +12,8 @@ import { FaFire } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { listingpage2schema } from "../schemas/listingpage2.js";
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const categories = [
   {
@@ -64,7 +64,7 @@ const ListingPage2 = () => {
     if (!selectedCategory) {
       alert("Select a category");
       return;
-}
+    }
     setListingFormData((prev) => ({
       ...prev,
       category: selectedCategory,

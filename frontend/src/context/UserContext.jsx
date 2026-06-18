@@ -6,11 +6,9 @@ export const userContext = createContext()
 
 const UserContextProvider = ({children})=>{
     const [userData,setUserData] = useState(null)
-    console.log(userData)
     async function checkAuth(){
         try {
             const result = await axiosClient.get("/user/check")
-            // console.log(result.data)
             setUserData(result.data)
         } catch (error) {
             setUserData(null)

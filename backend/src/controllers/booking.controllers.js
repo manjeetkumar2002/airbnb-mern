@@ -6,7 +6,7 @@ const createBooking = async (req, res) => {
     const userId = req.userId;
     const { listingId } = req.params;
     const { checkIn, checkOut } = req.body;
-    const mandatoryFields = ["checkIn", "checkOut", "days"];
+    const mandatoryFields = ["checkIn", "checkOut"];
     const isAllowed = mandatoryFields.every((k) =>
       Object.keys(req.body).includes(k),
     );
