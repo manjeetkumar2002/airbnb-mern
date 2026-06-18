@@ -6,9 +6,11 @@ import MessageContextProvider from "./context/MessageContext.jsx";
 import UserContextProvider from "./context/UserContext.jsx";
 import ListingContextProvider from "./context/ListingContext.jsx";
 import "./App.css";
+import BookingContextProVider from "./context/BookingContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <UserContextProvider>
+      <BookingContextProVider>
       <MessageContextProvider>
         <ListingContextProvider>
           <BrowserRouter>
@@ -16,6 +18,7 @@ createRoot(document.getElementById("root")).render(
           </BrowserRouter>
         </ListingContextProvider>
       </MessageContextProvider>
+      </BookingContextProVider>
     </UserContextProvider>
   </StrictMode>,
 );

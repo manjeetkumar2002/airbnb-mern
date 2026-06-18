@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axiosClient from '../utils/axiosClient'
 import Card from '../component/Card'
+import { bookingContext } from '../context/BookingContext'
 const MyBooking = () => {
-  const [booking,setBooking] = useState([])
-  const fetchAllBooking = async()=>{
-    try {
-      const result = await axiosClient.get("/booking/my-bookings")
-      setBooking(result.data)
-    } catch (error) {
-      
-    }
-  }
-  useEffect(()=>{
-    fetchAllBooking()
-  },[])
+  const {booking,setBooking} = useContext(bookingContext)
   return (
     <div className='max-w-[1280px] mx-auto py-[50px]'>
       <div className='text-4xl text-center p-4 border-1 border-gray-400 w-full max-w-[600px] mx-auto'>My Booking</div>
