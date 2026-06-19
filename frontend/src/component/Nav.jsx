@@ -72,7 +72,7 @@ const Nav = () => {
             <NavLink>Login</NavLink>
           </div>
           <div className="pb-2 px-5  w-full ">
-            <NavLink>List your Home</NavLink>
+            <NavLink to="listingpage1">List your Home</NavLink>
           </div>
           <div className="pb-2 px-5  w-full ">
             <NavLink to="/mylisting">My Listing</NavLink>

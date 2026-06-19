@@ -20,7 +20,7 @@ const BookingContextProvider = ({children})=>{
         fetchAllBooking()
   },[userData])
     return (
-        <bookingContext.Provider value={{booking,setBooking}}>{children}</bookingContext.Provider>
+        <bookingContext.Provider value={{booking,setBooking,fetchAllBooking}}>{children}</bookingContext.Provider>
     )
 }
 

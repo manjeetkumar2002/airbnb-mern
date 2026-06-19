@@ -91,13 +91,7 @@ const cancelBooking = async (req, res) => {
     if (booking.status === "cancelled") {
     throw new Error("Booking already cancelled");
     }
-    const isHost = booking.listing.host.toString() === userId;
 
-    const isGuest = booking.guest.toString() === userId;
-
-    if (!isHost && !isGuest) {
-      throw new Error("Unauthorized");
-    }
     booking.status = "cancelled";
     await booking.save();
 
@@ -119,7 +113,7 @@ const cancelBooking = async (req, res) => {
 const guestAllBooking = async (req, res) => {
   try {
     const userId = req.userId;
-    const bookings = await Booking.find({ guest: userId }).populate("listing");
+    const bookings = await Booking.find({ guest: userId ,status:"confirmed" }).populate("listing");
     res.status(200).json(bookings);
   } catch (error) {
     console.log(error);

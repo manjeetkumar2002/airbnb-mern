@@ -10,6 +10,7 @@ import { z } from "zod";
 import { listingContext } from "../context/ListingContext.jsx";
 import { RxCross1 } from "react-icons/rx";
 import { MessageContext } from "../context/MessageContext.jsx";
+import { bookingContext } from "../context/BookingContext.jsx";
 
 const schema = z.object({
   title: z.string().min(3, "Title is required"),
@@ -52,6 +53,7 @@ const ViewCard = () => {
   const { userData } = useContext(userContext);
   const [edit, setEdit] = useState(false);
   const [booking,setBooking] = useState(false)
+  const {fetchAllBooking} = useContext(bookingContext) 
   const {showMessage} = useContext(MessageContext)
   // edit form
   const {
@@ -145,6 +147,8 @@ async function handleBooking(data) {
     );
 
     console.log(result);
+    navigate("/")
+    fetchAllBooking()
     showMessage(result.data.message)
   } catch (error) {
     console.log(error);
@@ -221,8 +225,8 @@ async function handleBooking(data) {
       {/* edit form */}
       {edit && (
         <div className="flex justify-center items-start fixed left-0 top-[20px] w-full z-200">
-          <div className="relative top-[-10px] left-4 p-4 bg-secondary text-white rounded-full text-xl">
-          <RxCross1 onClick={()=>setEdit(false)} />
+          <div onClick={()=>setEdit(false)} className="cursor-pointer relative top-[-10px] left-4 p-4 bg-secondary text-white rounded-full text-xl">
+          <RxCross1  />
           </div>
           <form
             onSubmit={handleSubmit(updateListing)}
