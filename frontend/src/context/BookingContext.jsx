@@ -11,6 +11,7 @@ const BookingContextProvider = ({children})=>{
         const result = await axiosClient.get("/booking/my-bookings")
         console.log("bookings :",result.data)
         setBooking(result.data)
+        
         } catch (error) {
         console.log(error);
         }

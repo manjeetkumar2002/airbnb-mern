@@ -9,7 +9,8 @@ const MyListing = () => {
       console.log(result.data)
       setMyListing([...result.data])
     } catch (error) {
-      console.log(error)
+      console.log(error?.response?.data?.message)
+      showMessage(error?.response?.data?.message,false);
     }
   }
   useEffect(()=>{

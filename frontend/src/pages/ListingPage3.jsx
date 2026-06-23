@@ -3,12 +3,17 @@ import { listingContext } from "../context/ListingContext";
 import axiosClient from "../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { success } from "zod";
+import { MessageContext } from "../context/MessageContext";
 
 const ListingPage3 = () => {
+  const {showMessage} = useContext(MessageContext)
   const { listingFormData, setListingFormData } = useContext(listingContext);
   const [loading,setLoading] = useState(false)
   console.log(listingFormData);
   const navigate = useNavigate();
+
+
   async function uploadListing() {
     setLoading(true)
     try {
@@ -29,12 +34,16 @@ const ListingPage3 = () => {
         },
       });
       console.log(result.data);
+      showMessage(result.data.message,true)
       navigate("/");
     } catch (error) {
       console.log(error);
+      showMessage(error?.response?.data?.message,false);
     }
     setLoading(false)
   }
+
+
   return (
     <div className="max-w-[1280px] mx-auto h-screen ">
       <div

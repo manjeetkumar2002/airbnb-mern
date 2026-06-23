@@ -3,9 +3,9 @@ import { createContext, useState } from "react";
 export const MessageContext = createContext()
 
 const MessageContextProvider = ({children})=>{
-    const [message,setMessage] = useState(null)
-    const showMessage=(content,type="success")=>{
-        setMessage(content)
+    let [message,setMessage] = useState(null)
+    const showMessage=(content,success)=>{
+        setMessage({content:content,success:success})
         setTimeout(()=>{
             setMessage(null)
         },3000)

@@ -1,10 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { success, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NavLink, useNavigate } from "react-router-dom";
 import axiosClient from "../utils/axiosClient";
-import ErrorModal from "../component/ErrorModal.jsx";
 import { FaArrowLeft } from "react-icons/fa";
 import { MessageContext } from "../context/MessageContext.jsx";
 import { userContext } from "../context/UserContext.jsx";
@@ -14,7 +13,7 @@ const loginSchema = z.object({
   password: z.string(),
 });
 const Login = () => {
-  const { showMessage } = useContext(MessageContext);
+  const { showMessage,message } = useContext(MessageContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +22,6 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(loginSchema) });
-  const [error, setError] = useState("");
   const { setUserData } = useContext(userContext);
   const onSubmit = async (data) => {
     setLoading(true);
@@ -31,22 +29,15 @@ const Login = () => {
       const result = await axiosClient.post("/user/login", data);
       console.log(result.data);
       setUserData(result.data.user);
-      showMessage(result.data.message);
+      showMessage(result.data.message,true);
       navigate("/");
     } catch (error) {
       console.log(error?.response?.data?.message);
-      setError(error?.response?.data?.message || "Something went wrong");
-      setTimeout(() => {
-        setError("");
-      }, 3000);
+      showMessage(error?.response?.data?.message,false);
     } finally {
       setLoading(false);
     }
   };
-  if (error) {
-    return <ErrorModal message={error} onClose={() => setError("")} />;
-  }
-
   return (
     <div className="flex justify-center items-center w-full h-screen relative">
       <div className="absolute top-3 left-3 p-4 rounded-full bg-secondary cursor-pointer">
@@ -145,7 +136,9 @@ const Login = () => {
             {loading ? "Login..." : "Login"}
           </button>
         </div>
-
+        {message && 
+        <div className= {`text-center ${message?.success?"text-success":"text-error"}`}>Error : {message?.content}</div>
+        }
         {/* Login Redirect */}
         <div className="text-center mt-6">
           {" "}

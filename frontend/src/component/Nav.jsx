@@ -87,16 +87,16 @@ const Nav = () => {
       </div>
       {/* message popup */}
       <div
-        className={`${message ? "block" : "hidden"} max-w-[300px] w-full z-100 bg-white text-success rounded-md fixed top-5 right-5 p-5`}
+        className={`${message ? "block" : "hidden"} max-w-[300px] w-full z-100 bg-white rounded-md fixed top-5 right-5 p-5`}
       >
-        Message : {message}
+        <div className={`${message?.success?"text-success":"text-error"}`}>Message : {message?.content}</div>
         <RxCross2
           onClick={() => setMessage(null)}
           className="text-2xl text-black absolute right-1 top-1 "
         />
         {/* Progress Bar */}
         <progress
-          className="progress h-2 right-0 left-0 absolute bottom-0 progress-success w-full rounded-0"
+          className={`progress h-2 right-0 left-0 absolute bottom-0 ${message?.success?"progress-success":"progress-error"} w-full rounded-0`}
           value={progress}
           max="100"
         ></progress>

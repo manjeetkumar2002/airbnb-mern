@@ -55,12 +55,14 @@ const createListing = async (req, res) => {
       category
     });
     res.status(201).json({
+      success:true,
       message: "Listing Created Successfully",
       listing,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
+      success:false,
       message:
         process.env.NODE_ENV === "development"
           ? error.message
@@ -76,6 +78,7 @@ const getAllListing = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
+      success:false,
       message:
         process.env.NODE_ENV === "development"
           ? error.message
@@ -108,6 +111,7 @@ const getListingById = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
+      success:false,
       message:
         process.env.NODE_ENV === "development"
           ? error.message

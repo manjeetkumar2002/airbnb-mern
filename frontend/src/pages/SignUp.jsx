@@ -1,10 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { success, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NavLink, useNavigate } from "react-router-dom";
 import axiosClient from "../utils/axiosClient";
-import ErrorModal from "../component/ErrorModal.jsx";
 import { MessageContext } from "../context/MessageContext.jsx";
 const signupSchema = z.object({
   userName: z.string().min(3, "Minimum character should be 3"),
@@ -20,30 +19,23 @@ const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(signupSchema) });
-  const [error, setError] = useState("");
-  const { showMessage } = useContext(MessageContext);
+  const { showMessage ,message } = useContext(MessageContext);
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
       const result = await axiosClient.post("/user/register", data);
       console.log(result.data);
-      showMessage(result.data.message);
+      showMessage(result.data.message,true);
       navigate("/");
     } catch (error) {
       console.log(error?.response?.data?.message);
-      setError(error?.response?.data?.message || "Something went wrong");
-      setTimeout(() => {
-        setError("");
-      }, 3000);
+      showMessage(error?.response?.data?.message,false);
     } finally {
       setLoading(false);
     }
   };
 
-  if (error) {
-    return <ErrorModal message={error} onClose={() => setError("")} />;
-  }
 
   return (
     <div className="flex justify-center items-center w-full h-screen">
@@ -157,7 +149,9 @@ const SignUp = () => {
             {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </div>
-
+          {message && 
+                  <div className= {`text-center ${message?.success?"text-success":"text-error"}`}>Error : {message?.content}</div>
+                  }
         {/* Login Redirect */}
         <div className="text-center mt-6">
           {" "}

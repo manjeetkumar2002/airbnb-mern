@@ -29,13 +29,13 @@ const register = async (req, res) => {
     });
     // step4 :generate a token
     const token = jwt.sign({ userId: user._id }, JWT_SECRET_KEY, {
-      expiresIn: 60 * 60,
+      expiresIn:'2d',
     }); // 1hr in seconds
     res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    maxAge: 60 * 60 * 1000,
+    maxAge: 2* 24 * 60 * 60 * 1000,
     }); // 1 hour in miliseconds
 
     const userResponse = user.toObject();
@@ -44,6 +44,7 @@ const register = async (req, res) => {
     res.status(201).json({
       user: userResponse,
       message: "Register successfully",
+      success:true,
     });
   } catch (error) {
     console.error(error);
@@ -85,13 +86,13 @@ const login = async (req, res) => {
 
     // send the token to user
     const token = jwt.sign({ userId: user._id }, JWT_SECRET_KEY, {
-      expiresIn: 60 * 60,
+      expiresIn: '2d',
     });
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 60 * 60 * 1000,
+      maxAge:2*24* 60 * 60 * 1000,
     });
 
     const userResponse = user.toObject();
@@ -100,10 +101,12 @@ const login = async (req, res) => {
     res.status(200).json({
     user: userResponse,
     message: "Login Successfully",
+    success:true,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
+      success:false,
       message:
         process.env.NODE_ENV === "development"
           ? error.message
@@ -136,10 +139,12 @@ const logout = async (req, res) => {
     });
     res.status(200).json({
       message: "Logout Successfully",
+      success:true
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
+      success:false,
       message:
         process.env.NODE_ENV === "development"
           ? error.message
@@ -178,6 +183,7 @@ const checkAuth = async(req,res)=>{
   } catch (error) {
     console.log(error);
     res.status(500).json({
+      success:false,
       message:
         process.env.NODE_ENV === "development"
           ? error.message
